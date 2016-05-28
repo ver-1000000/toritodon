@@ -1,0 +1,1028 @@
+;===========================================================================
+; 通常攻撃技
+;===========================================================================
+; ステートナンバーは、立ち技が２００〜２９９、しゃがみ技が４００〜４９９、
+; ジャンプ技が６００〜６９９の間で決めて作るのが一般的。
+;==========================================================
+; どろかけ（弱）
+[Statedef 200]
+type               = S
+movetype           = A
+physics            = S
+poweradd           = 0
+velset             = -2,0
+anim               = 200
+ctrl               = 0
+sprpriority        = 2
+[State 200, ランダム変数定義]
+type               = VarSet
+trigger1           = Time = 0
+var(0)             = 0
+[State 200, ランダム変数定義]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 0
+rangh              = 1,100
+[State 200, 音を鳴らす];ぐちょぐちょ
+type               = PlaySnd
+trigger1           = Time = 0
+trigger1           = var(0) <=80 
+channel            = 0
+value              = s1, 1
+[State 200, 泥]
+type               = Projectile
+trigger1           = Time = 10
+attr               = S, NA
+hitflag            = MAFD
+damage             = 13
+animtype           = light
+offset             = 11,-35
+velocity           = 2,3.4
+projID             = 205
+projanim           = 205
+projremanim        = 206        ;飛び道具が消える時のアニメ（アクションナンバー）
+projscale          = 1,1        ;飛び道具のサイズ比率
+projshadow         = 0,0,0    ;飛び道具の影の色合い（赤,緑,青）
+projhits           = 3        ;飛び道具のヒット数（２以上なら多段ヒットになる）
+projmisstime       = 3        ;飛び道具の連続でヒットしない間隔
+projpriority       = 2        ;飛び道具の攻撃優先度・相手のProjectileよりも高いと消しながら進む
+projremove         = 0        ;飛び道具のヒット時に消えるか否か
+projremovetime     = 9        ;飛び道具の消えるまでの時間※-1なら当たるか画面外に出るまで消えない
+guardflag          = MA
+priority           = 3,Hit
+sparkno            = 0
+sparkxy            = 0,0
+guard.sparkno      = 40
+hitsound           = s2,2
+guardsound         = 6,0
+ground.slidetime   = 3
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -1,-1
+air.juggle         = 1
+[State 200, ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 0
+ctrl               = 1
+
+;==========================================================
+; どろかけ（強）
+[Statedef 210]
+type               = S
+movetype           = A
+physics            = S
+poweradd           = 10
+velset             = -2,0
+anim               = 210
+ctrl               = 0
+sprpriority        = 2
+[State 210, ランダム変数定義]
+type               = VarSet
+trigger1           = Time = 0
+var(0)             = 0
+[State 210, ランダム変数定義]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 0
+rangh              = 1,100
+[State 210, 音を鳴らす];ぐちょぐちょ
+type               = PlaySnd
+trigger1           = Time = 0
+trigger1           = var(0) <=80 
+channel            = 0
+value              = s1, 1
+[State 210, 泥]
+type               = Projectile
+trigger1           = Time = 10
+attr               = S, NA
+hitflag            = MAFD
+damage             = 32
+animtype           = medium
+pausetime          = 4,4
+offset             = 11,-35
+velocity           = 8,3.4
+accel              = -0.5,0
+projID             = 215
+projanim           = 205
+projremanim        = 206
+projscale          = 1,1
+projshadow         = 0,0,0
+projhits           = 2
+projmisstime       = 3
+projpriority       = 3
+projremove         = 0
+projremovetime     = 9
+guardflag          = MA
+priority           = 3,Hit
+sparkno            = 1
+sparkxy            = 0,0
+guard.sparkno      = 40
+hitsound           = s2,2
+guardsound         = 6,0
+ground.slidetime   = 4
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -5,0
+air.velocity       = -2,-2
+air.juggle         = 3
+[State 210, ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 0
+ctrl               = 1
+
+;==========================================================
+; めざめるパワー（弱）
+[Statedef 250]
+type               = S
+movetype           = A
+physics            = S
+poweradd           = 0
+velset             = 0,0
+anim               = 250
+ctrl               = 0
+sprpriority        = 2
+[State 250, Red]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 0
+rangh              = 1,150
+[State 250, Green]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 1
+rangh              = 1,150
+[State 250, Blue]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 2
+rangh              = 1,150
+[State 250, 音]
+type               = PlaySnd
+trigger1           = Time = 0
+channel            = 0
+value              = s2, 3
+[State 250, 身に纏う光]
+type               = Explod
+trigger1           = time = 6
+anim               = 255
+ID                 = 255
+pos                = -7,-25
+postype            = p1
+sprpriority        = 3
+scale              = 0.5,0.3
+bindtime           = -1
+removeongethit     = 1
+[State 250, 前方へめざめるパワー]
+type               = Projectile
+trigger1           = Time = 7
+attr               = S, NA
+hitflag            = MAFP
+damage             = (var(0)+var(1)+var(2))/100+1
+animtype           = light
+palfx.time         = 6
+palfx.add          = var(0)/2,var(1)/2,var(2)/2
+offset             = 0,-25
+velocity           = 6,0
+accel              = -0.4,0
+projID             = 250
+projanim           = 256
+projhits           = 4
+projmisstime       = 6
+projpriority       = 3
+projremove         = 0
+projremovetime     = 28
+guardflag          = MA
+priority           = 3,Hit
+sparkno            = 0
+guard.sparkno      = 40
+hitsound           = s2,4
+guardsound         = 6,0
+ground.slidetime   = 3
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -1,-1
+[State 250, 前方へめざめるパワー]
+type               = Projectile
+trigger1           = Time = 7
+attr               = S, NA
+hitflag            = MAFP
+damage             = (var(0)+var(1)+var(2))/100+1
+animtype           = light
+palfx.time         = 6
+palfx.add          = var(0)/2,var(1)/2,var(2)/2
+offset             = 0,-25
+velocity           = -6,0
+accel              = 0.4,0
+projID             = 250
+projanim           = 256
+projhits           = 4
+projmisstime       = 6
+projpriority       = 3
+projremove         = 0
+projremovetime     = 28
+guardflag          = MA
+priority           = 3,Hit
+sparkno            = 0
+guard.sparkno      = 40
+hitsound           = s2,4
+guardsound         = 6,0
+ground.slidetime   = 3
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -1,-1
+[State 250, 色]
+type               = PalFX
+trigger1           = NumProjID(250) >= 1
+time               = 1
+mul                = var(0)/2+20,var(1)/2+20,var(2)/2+20
+[State 250, ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 0
+ctrl               = 1
+
+;==========================================================
+; めざめるパワー（強）
+[Statedef 260]
+type               = S
+movetype           = A
+physics            = S
+poweradd           = 0
+velset             = 0,0
+anim               = 250
+ctrl               = 0
+sprpriority        = 2
+[State 260, Red]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 0
+rangh              = 1,150
+[State 260, Green]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 1
+rangh              = 1,150
+[State 260, Blue]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 2
+rangh              = 1,150
+[State 260, 音を鳴らす];ぐちょぐちょ
+type               = PlaySnd
+trigger1           = Time = 0
+channel            = 0
+value              = s2, 3
+[State 260, 身に纏う光]
+type               = Explod
+trigger1           = time = 7
+anim               = 255
+ID                 = 265
+pos                = -7,-25
+postype            = p1
+sprpriority        = 3
+scale              = 0.5,0.3
+bindtime           = -1
+removeongethit     = 1
+[State 260, 前方へめざめるパワー]
+type               = Projectile
+trigger1           = Time = 8
+attr               = S, NA
+hitflag            = MAFP
+damage             = (var(0)+var(1)+var(2))/100+1
+animtype           = light
+palfx.time         = 6
+palfx.add          = var(0)/2,var(1)/2,var(2)/2
+offset             = 0,-25
+velocity           = 8,0
+accel              = -0.5,0
+projID             = 250
+projanim           = 256
+projhits           = 6
+projmisstime       = 5
+projpriority       = 3
+projremove         = 0
+projremovetime     = 30
+guardflag          = MA
+priority           = 3,Hit
+sparkno            = 0
+guard.sparkno      = 40
+hitsound           = s2,4
+guardsound         = 6,0
+ground.slidetime   = 3
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -1,-1
+[State 260, 後方へめざめるパワー]
+type               = Projectile
+trigger1           = Time = 10
+attr               = S, NA
+hitflag            = MAFP
+damage             = (var(0)+var(1)+var(2))/100+1
+animtype           = light
+palfx.time         = 6
+palfx.add          = var(0)/2,var(1)/2,var(2)/2
+offset             = 0,-25
+velocity           = -8,0
+accel              = 0.5,0
+projID             = 250
+projanim           = 256
+projhits           = 6
+projmisstime       = 5
+projpriority       = 3
+projremove         = 0
+projremovetime     = 30
+guardflag          = MA
+priority           = 3,Hit
+sparkno            = 0
+guard.sparkno      = 40
+hitsound           = s2,4
+guardsound         = 6,0
+ground.slidetime   = 3
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -1,-1
+[State 260, 色]
+type               = PalFX
+trigger1           = NumProjID(250) >= 1
+time               = 1
+mul                = var(0)/2+20,var(1)/2+20,var(2)/2+20
+[State 260, ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 0
+ctrl               = 1
+
+;==========================================================
+; どろあそび（弱）
+[Statedef 400]
+type               = C
+movetype           = A
+physics            = C
+juggle             = 1
+velset             = 0,0
+ctrl               = 0
+anim               = 400
+poweradd           = 0
+[State 400 , ヒット定義]
+type               = HitDef
+trigger1           = time = 3
+trigger2           = time = 9
+trigger3           = time = 14
+trigger4           = time = 19
+attr               = S, SA
+damage             = 15,1
+animtype           = light
+getpower           = 5,2
+guardflag          = L
+hitflag            = MAFD
+priority           = 3, Hit
+pausetime          = 2,3
+hitsound           = s2,2
+guardsound         = 6,0
+sparkxy            = 0,-10
+ground.type        = Low
+ground.slidetime   = 1
+ground.hittime     = 5
+ground.velocity    = -1,0
+airguard.velocity  = -1,-2
+air.velocity       = -1.3,-2
+[State 400, 泥手前正面]
+type               = Explod
+trigger1           = time = 1
+anim               = 405
+ID                 = 400
+pos                = 0,0
+postype            = p1
+random             = 8,2
+sprpriority        = 3
+ownpal             = 1
+scale              = 0.5,0.5
+[State 400, 泥奥]
+type               = Explod
+trigger1           = time = 10
+anim               = 405
+ID                 = 400
+pos                = 0,0
+postype            = p1
+random             = 48,2
+sprpriority        = -3
+ownpal             = 1
+scale              = 0.5,0.5
+removetime         = 10
+[State 400, 泥手前後面]
+type               = Explod
+trigger1           = time = 3
+anim               = 405
+ID                 = 400
+pos                = 0,0
+postype            = p1
+facing             = -1
+random             = 8,4
+sprpriority        = 3
+ownpal             = 1
+scale              = 0.5,0.5
+[State 400 , ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 0
+ctrl               = 1
+
+;==========================================================
+; どろあそび（強）
+[Statedef 410]
+type               = C
+movetype           = A
+physics            = C
+juggle             = 2
+velset             = 0,0
+ctrl               = 0
+anim               = 410
+poweradd           = 5
+[State 410 , ヒット定義]
+type               = HitDef
+trigger1           = time = 10
+trigger2           = time = 14
+trigger3           = time = 18
+trigger4           = time = 22
+trigger4           = time = 26
+trigger4           = time = 30
+attr               = S, SA
+damage             = 19,1
+animtype           = medium
+getpower           = 5,2
+guardflag          = L
+hitflag            = MAFD
+priority           = 4, Hit
+pausetime          = 3,4
+hitsound           = s2,2
+guardsound         = 6,0
+sparkxy            = 0,-10
+ground.type        = Low
+ground.slidetime   = 3
+ground.hittime     = 6
+ground.velocity    = -2,0
+airguard.velocity  = -2,-2.2
+air.velocity       = -2.3,-2.3
+[State 410, 泥手前正面]
+type               = Explod
+trigger1           = time = 9
+anim               = 405
+ID                 = 410
+pos                = 10,0
+postype            = p1
+random             = 8,2
+sprpriority        = 3
+ownpal             = 1
+scale              = 0.5,0.5
+[State 410, 泥奥]
+type               = Explod
+trigger1           = time = 15
+anim               = 405
+ID                 = 410
+pos                = 0,0
+postype            = p1
+random             = 48,2
+sprpriority        = -3
+ownpal             = 1
+scale              = 0.5,0.5
+removetime         = 10
+[State 410, 泥手前後面]
+type               = Explod
+trigger1           = time = 12
+anim               = 405
+ID                 = 410
+pos                = -10,0
+postype            = p1
+facing             = -1
+random             = 8,4
+sprpriority        = 3
+ownpal             = 1
+scale              = 0.5,0.5
+;[State 410, 効果音]
+;type              = PlaySnd
+;trigger1          = AnimElem = 2
+;value             = s0, 1
+[State 410 , ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 0
+ctrl               = 1
+
+;==========================================================
+; 下めざめるパワー（弱）
+[Statedef 450]
+type               = C
+movetype           = A
+physics            = C
+poweradd           = 5
+velset             = 0,0
+anim               = 450
+ctrl               = 0
+sprpriority        = 2
+[State 450, Red]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 0
+rangh              = 1,150
+[State 450, Green]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 1
+rangh              = 1,150
+[State 450, Blue]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 2
+rangh              = 1,150
+[State 450, 音を鳴らす];ぐちょぐちょ
+type               = PlaySnd
+trigger1           = Time = 0
+channel            = 0
+value              = s2, 3
+[State 450, 身に纏う光]
+type               = Explod
+trigger1           = time = 6
+anim               = 255
+ID                 = 455
+pos                = -7,-15
+postype            = p1
+sprpriority        = 3
+scale              = 0.5,0.2
+bindtime           = -1
+removeongethit     = 1
+[State 450, 前方へめざめるパワー]
+type               = Projectile
+trigger1           = Time = 7
+attr               = C, NA
+hitflag            = MAFDP
+damage             = (var(0)+var(1)+var(2))/100+1
+animtype           = light
+palfx.time         = 6
+palfx.add          = var(0)/2,var(1)/2,var(2)/2
+offset             = 0,-10
+velocity           = 6,0.2
+accel              = -0.4,0
+projID             = 450
+projanim           = 256
+projhits           = 4
+projmisstime       = 6
+projpriority       = 3
+projremove         = 0
+projremovetime     = 28
+guardflag          = L
+ground.type        = Low
+priority           = 3,Hit
+sparkno            = 0
+guard.sparkno      = 40
+hitsound           = s2,4
+guardsound         = 6,0
+ground.slidetime   = 3
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -1,-1
+[State 450, 前方へめざめるパワー]
+type               = Projectile
+trigger1           = Time = 7
+attr               = C, NA
+hitflag            = MAFP
+damage             = (var(0)+var(1)+var(2))/100+1
+animtype           = light
+palfx.time         = 6
+palfx.add          = var(0)/2,var(1)/2,var(2)/2
+offset             = 0,-10
+velocity           = -6,0.2
+accel              = 0.4,0
+projID             = 450
+projanim           = 256
+projhits           = 4
+projmisstime       = 6
+projpriority       = 3
+projremove         = 0
+projremovetime     = 28
+guardflag          = L
+ground.type        = Low
+priority           = 3,Hit
+sparkno            = 0
+guard.sparkno      = 40
+hitsound           = s2,4
+guardsound         = 6,0
+ground.slidetime   = 3
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -1,-1
+[State 450, 色]
+type               = PalFX
+trigger1           = NumProjID(450) >= 1
+time               = 1
+mul                = var(0)/2+20,var(1)/2+20,var(2)/2+20
+[State 450, ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 11
+ctrl               = 1
+
+;==========================================================
+; めざめるパワー（強）
+[Statedef 460]
+type               = C
+movetype           = A
+physics            = C
+poweradd           = 0
+velset             = 0,0
+anim               = 450
+ctrl               = 0
+sprpriority        = 2
+[State 460, Red]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 0
+rangh              = 1,150
+[State 460, Green]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 1
+rangh              = 1,150
+[State 460, Blue]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 2
+rangh              = 1,150
+[State 460, 音を鳴らす];ぐちょぐちょ
+type               = PlaySnd
+trigger1           = Time = 0
+channel            = 0
+value              = s2, 3
+[State 460, 身に纏う光]
+type               = Explod
+trigger1           = time = 7
+anim               = 255
+ID                 = 465
+pos                = -7,-15
+postype            = p1
+sprpriority        = 3
+scale              = 0.5,0.2
+bindtime           = -1
+removeongethit     = 1
+[State 460, 前方へめざめるパワー]
+type               = Projectile
+trigger1           = Time = 8
+attr               = C, NA
+hitflag            = MAFP
+damage             = (var(0)+var(1)+var(2))/100+1
+animtype           = light
+palfx.time         = 6
+palfx.add          = var(0)/2,var(1)/2,var(2)/2
+offset             = 0,-10
+velocity           = 8,0.2
+accel              = -0.5,0
+projID             = 450
+projanim           = 256
+projhits           = 6
+projmisstime       = 5
+projpriority       = 3
+projremove         = 0
+projremovetime     = 30
+guardflag          = L
+ground.type        = Low
+priority           = 3,Hit
+sparkno            = 0
+guard.sparkno      = 40
+hitsound           = s2,3
+guardsound         = 6,0
+ground.slidetime   = 3
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -1,-1
+[State 460, 後方へめざめるパワー]
+type               = Projectile
+trigger1           = Time = 10
+attr               = C, NA
+hitflag            = MAFDP
+damage             = (var(0)+var(1)+var(2))/100+1
+animtype           = light
+palfx.time         = 6
+palfx.add          = var(0)/2,var(1)/2,var(2)/2
+offset             = 0,-10
+velocity           = -8,0.2
+accel              = 0.5,0
+projID             = 450
+projanim           = 256
+projhits           = 6
+projmisstime       = 5
+projpriority       = 3
+projremove         = 0
+projremovetime     = 30
+guardflag          = L
+ground.type        = Low
+priority           = 3,Hit
+sparkno            = 0
+guard.sparkno      = 40
+hitsound           = s2,3
+guardsound         = 6,0
+ground.slidetime   = 3
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -1,-1
+[State 460, 色]
+type               = PalFX
+trigger1           = NumProjID(450) >= 1
+time               = 1
+mul                = var(0)/2+20,var(1)/2+20,var(2)/2+20
+[State 460, ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 11
+ctrl               = 1
+
+;==========================================================
+; 上どろかけ（弱）
+[Statedef 600]
+type               = S
+movetype           = A
+physics            = S
+poweradd           = 0
+juggle             = 1
+velset             = 0,0
+anim               = 600
+ctrl               = 0
+sprpriority        = 2
+[State 600, ランダム変数定義]
+type               = VarSet
+trigger1           = Time = 0
+var(0)             = 0
+[State 600, ランダム変数定義]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 0
+rangh              = 1,100
+[State 600, 音を鳴らす];ぐちょぐちょ
+type               = PlaySnd
+trigger1           = Time = 0
+trigger1           = var(0) <=80 
+channel            = 0
+value              = s0, 1
+[State 600, 泥]
+type               = Projectile
+trigger1           = Time = 6
+attr               = S, NA
+hitflag            = MAFD
+damage             = 15
+offset             = 5,-40
+velocity           = 4,-2
+accel              = 0,0.373
+velmul             = 0.9,1
+projanim           = 605
+projremanim        = 206
+projhits           = 2
+projmisstime       = 5
+projpriority       = 2
+projremove         = 0        ;飛び道具のヒット時に消えるか否か
+projremovetime     = 20
+guardflag          = HA
+priority           = 3,Hit
+sparkno            = 0
+sparkxy            = 0,0
+guard.sparkno      = 40
+hitsound           = s2,2
+guardsound         = 6,0
+ground.slidetime   = 2
+ground.hittime     = 3
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -3,-1
+air.juggle         = 2
+[State 600, ステート変更]
+type               = ChangeState
+trigger1           = AnimElemTime(5) = 10
+value              = 40
+ctrl               = 1
+
+;==========================================================
+; 上どろかけ（強）
+[Statedef 610]
+type               = S
+movetype           = A
+physics            = S
+poweradd           = 0
+juggle             = 2
+velset             = 0,0
+anim               = 600
+ctrl               = 0
+sprpriority        = 2
+[State 610, 音]
+type               = PlaySnd
+trigger1           = (GameTime%50) = 0
+trigger1           = Time = 0
+value              = s0, 1
+[State 610, 泥]
+type               = Projectile
+trigger1           = Time = 6
+attr               = S, NA
+hitflag            = MAFD
+damage             = 15
+offset             = 5,-40
+velocity           = 5,-5
+accel              = 0,0.461
+velmul             = 0.9,1
+projanim           = 605
+projremanim        = 206
+projhits           = 3
+projmisstime       = 5
+projpriority       = 2
+projremove         = 0        ;飛び道具のヒット時に消えるか否か
+projremovetime     = 27
+guardflag          = HA
+priority           = 3,Hit
+sparkno            = 0
+sparkxy            = 0,0
+guard.sparkno      = 40
+hitsound           = s2,2
+guardsound         = 6,0
+ground.slidetime   = 2
+ground.hittime     = 3
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -3,-1
+air.juggle         = 2
+[State 610, ステート変更]
+type               = ChangeState
+trigger1           = AnimElemTime(5) = 20
+value              = 40
+ctrl               = 1
+
+;==========================================================
+; 上めざめるパワー（弱）
+[Statedef 650]
+type               = S
+movetype           = A
+physics            = S
+poweradd           = 0
+velset             = 0,0
+anim               = 650
+ctrl               = 0
+sprpriority        = 2
+[State 650, Red]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 0
+rangh              = 1,220
+[State 650, Green]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 1
+rangh              = 1,220
+[State 650, Blue]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 2
+rangh              = 1,220
+[State 650, 音を鳴らす];ぐちょぐちょ
+type               = PlaySnd
+trigger1           = Time = 0
+channel            = 0
+value              = s2, 3
+[State 650, 身に纏う光]
+type               = Explod
+trigger1           = time = 6
+anim               = 255
+ID                 = 655
+pos                = -7,-25
+postype            = p1
+sprpriority        = 3
+scale              = 0.3,0.5
+bindtime           = -1
+removeongethit     = 1
+[State 650, めざめるパワー]
+type               = Projectile
+trigger1           = Time = 7
+attr               = S, NA
+hitflag            = MAFP
+damage             = (var(0)+var(1)+var(2))/100+1
+animtype           = medium
+palfx.time         = 6
+palfx.add          = var(0)/2,var(1)/2,var(2)/2
+offset             = 0,-35
+velocity           = 0,-7
+accel              = 0,0.5
+projID             = 650
+projanim           = 256
+projhits           = 7
+projmisstime       = 5
+projpriority       = 3
+projremove         = 0
+projremovetime     = 30
+guardflag          = HA
+priority           = 3,Hit
+sparkno            = 0
+guard.sparkno      = 40
+hitsound           = s2,4
+guardsound         = 6,0
+ground.slidetime   = 3
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -1,-1
+[State 250, 色]
+type               = PalFX
+trigger1           = NumProjID(650) >= 1
+time               = 1
+mul                = var(0)/2+20,var(1)/2+20,var(2)/2+20
+[State 250, ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 40
+ctrl               = 1
+
+;==========================================================
+; 上めざめるパワー（強）
+[Statedef 660]
+type               = S
+movetype           = A
+physics            = S
+poweradd           = 0
+velset             = 0,0
+anim               = 650
+ctrl               = 0
+sprpriority        = 2
+[State 660, Red]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 0
+rangh              = 1,220
+[State 660, Green]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 1
+rangh              = 1,220
+[State 660, Blue]
+type               = VarRandom
+trigger1           = Time = 0
+v                  = 2
+rangh              = 1,220
+[State 660, 音を鳴らす];ぐちょぐちょ
+type               = PlaySnd
+trigger1           = Time = 0
+channel            = 0
+value              = s2, 3
+[State 660, 身に纏う光]
+type               = Explod
+trigger1           = time = 7
+anim               = 255
+ID                 = 665
+pos                = -7,-25
+postype            = p1
+sprpriority        = 3
+scale              = 0.3,0.5
+bindtime           = -1
+removeongethit     = 1
+[State 660, めざめるパワー]
+type               = Projectile
+trigger1           = Time = 10
+attr               = S, NA
+hitflag            = MAFP
+damage             = (var(0)+var(1)+var(2))/100+1
+animtype           = light
+palfx.time         = 6
+palfx.add          = var(0)/2,var(1)/2,var(2)/2
+offset             = 0,-35
+velocity           = 0,-10
+accel              = 0,0.6
+projID             = 650
+projanim           = 256
+projhits           = 8
+projmisstime       = 4
+projpriority       = 3
+projremove         = 0
+projremovetime     = 30
+guardflag          = HA
+priority           = 3,Hit
+sparkno            = 0
+guard.sparkno      = 40
+hitsound           = s2,4
+guardsound         = 6,0
+ground.slidetime   = 3
+ground.hittime     = 4
+guard.hittime      = 3
+ground.velocity    = -2,0
+air.velocity       = -1,-1
+[State 660, 色]
+type               = PalFX
+trigger1           = NumProjID(650) >= 1
+time               = 1
+mul                = var(0)/2+20,var(1)/2+20,var(2)/2+20
+[State 660, ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 40
+ctrl               = 1

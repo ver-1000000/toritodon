@@ -1,0 +1,47 @@
+[Statedef 3000] ;じこさいせい
+type        = S
+movetype    = I
+physics     = S
+ctrl        = 0
+velset      = 0,0
+anim        = 3000
+sprpriority = 1
+
+[State 3000, 超必殺技]
+type	    = SuperPause
+trigger1    = time = 0
+anim	    = 100
+pos	    = 0, -20
+sound	    = 20, 0
+poweradd    = -2000
+time	    = 50
+
+[State 3000, 再生]
+type	    = LifeAdd
+trigger1    = 1
+value	    = lifemax / 200 * time * 0.0211
+
+[State 3000, オーラ]
+type	    = Explod
+trigger1    = Time = 4
+anim	    = 3010
+ID	    = 3010
+pos	    = 0,0
+postype     = p1
+sprpriority = 3
+scale	    = 0.5,0.5
+bindtime    = -1
+removetime  = -1
+removeongethit= 1
+
+[State 3000, オーラ変更]
+type	    = RemoveExplod
+trigger1    = AnimTime = 0
+ID	    = 3010
+
+[State 3000, ステート変更]
+type	    = ChangeState
+trigger1    = AnimTime = 0
+value	    = 0
+ctrl	    = 1
+

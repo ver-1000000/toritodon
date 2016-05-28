@@ -1,0 +1,123 @@
+;===========================================================================
+; 常時監視ステート（−２）
+;===========================================================================
+;---------------------------------------------------------------------------
+; 通常の食らい状態（Statedef 5000〜5199間）でも、
+; 相手に（「P2StateNo」や「TargetState」等で）制御を奪われても、
+; 常に登録したステートコントローラが有効になります。
+; サブシステム等を制御する時に重宝するでしょう。
+;---------------------------------------------------------------------------
+[Statedef -2]
+[State -2, tekitama]
+type           = Explod
+trigger1       = ProjHitTime(195) = 1 
+anim           = 196
+ID             = 198
+pos            = -10,-50
+postype        = p2
+vel            = -0.2,-1.0
+random         = 20,20
+sprpriority    = 3
+scale          = 0.25,0.25
+removetime     = 30
+removeongethit = 1
+[State -2, tekitama]
+type           = Explod
+trigger1       = ProjHitTime(195) = 1 
+anim           = 196
+ID             = 198
+pos            = -10,-43
+postype        = p2
+vel            = -0.2,-1.0
+random         = 20,20
+sprpriority    = 3
+scale          = 0.18,0.18
+removetime     = 30
+removeongethit = 1
+
+;==========================================================
+[State -2, 後ろ粘液]
+type           = Explod
+triggerall     = statetype = S && NumExplod(3) <= 1
+trigger1       = Anim = 20    || StateNo = 100
+anim           = 3
+ID             = 3
+pos            = -5, -1
+postype        = p1
+facing         = 1
+bindtime       = -1
+removetime     = -1
+sprpriority    = -3
+removeongethit = 1
+[State -2, 粘液変更]
+type           = ModifyExplod
+trigger1       = Vel x <= 0
+trigger1       = NumExplod(3) > 0
+trigger1       = Anim != 20    && StateNo != 100 
+ID             = 3
+pos            = 0, -1
+scale          = 0.7, 1
+[State -2, 粘液を消す]
+type           = RemoveExplod
+triggerall     = Time > 4
+trigger1       = NumExplod(3) > 0 && Anim != 20 && StateNo != 100
+ID             = 3
+
+;==========================================================
+[State -2, 前粘液]
+type           = Explod
+triggerall     = statetype = S    && NumExplod(4) <= 1
+trigger1       = Anim = 21    || StateNo = 105
+anim           = 3
+ID             = 4
+pos            = -5, -1
+postype        = p1
+facing         = -1
+bindtime       = -1
+removetime     = -1
+sprpriority    = -3
+removeongethit = 1
+[State -2, 粘液変更]
+type           = ModifyExplod
+trigger1       = Vel x <= 0
+trigger1       = NumExplod(4) > 0
+trigger1       = Anim != 21    && StateNo != 105 
+ID             = 4
+pos            = 0, -1
+scale          = 0.7, 1
+[State -2, 粘液を消す]
+type           = RemoveExplod
+triggerall     = Time > 4
+trigger1       = NumExplod(4) > 0 && Anim != 21 && StateNo != 105
+ID             = 4
+
+;==========================================================
+[State -2, Debug]
+type     = DisplayToClipboard
+trigger1 = 1
+text     = "Cancel=%d, Throw=%d, Button=%d, Body-Distance X=%d,Y=%d \n"
+params   = var(1),var(2),var(5),floor(P2BodyDist X),floor(P2BodyDist Y)
+[State -2, Debug（追加専用）]
+type     = AppendToClipboard
+trigger1 = 1
+text     = "Position X=%d,Y=%d, Velocity X=%f,Y=%f, Hit=%d \n"
+params   = floor(Pos X),floor(Pos Y),(Vel X),(Vel Y),(MoveHit)
+
+;===========================================================================
+; 準常時監視ステート（−３）
+;===========================================================================
+;---------------------------------------------------------------------------
+; こちらは通常の食らい状態以外の「P2StateNo」や「TargetState」等で制御された、
+; 作成者が任意に指定した相手側の食らいステートに限り、
+; 登録したステートコントローラが有効にはなりません。
+; −１や−２と上手く使い分けて行きましょう。
+;---------------------------------------------------------------------------
+[Statedef -3]
+[State -3, 着地音]
+type       = PlaySnd
+triggerall = Time = 1
+trigger1   = stateno = 52
+trigger2   = stateno = 106
+value      = 40, 0
+y          = -1
+

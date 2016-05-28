@@ -1,0 +1,108 @@
+;===========================================================================
+; コマンド攻撃技
+;===========================================================================
+[Statedef 1000] ; みずのはどう（弱）
+type               = S
+movetype           = A
+physics            = S
+poweradd           = 0
+velset             = 0,0
+anim               = 1000
+ctrl               = 0
+sprpriority        = 2
+[State 660, 音]
+type               = PlaySnd
+trigger1           = Time = 0
+channel            = 0
+value              = s2, 0
+[State 1000, 水]
+type               = Projectile
+trigger1           = Time = 13
+attr               = S, SP
+damage             = 65
+animtype           = light
+pausetime          = 3,3
+offset             = 5,-36
+velocity           = 2,0
+projID             = 1005
+projanim           = 1005
+projremanim        = 1006
+projscale          = 1,1
+projshadow         = 0,0,0
+projhits           = 1
+;projmisstime      = 3
+projpriority       = 2
+projremove         = 1
+projremovetime     = -1
+guardflag          = MA
+priority           = 3
+sparkno            = 1
+sparkxy            = 0,0
+guard.sparkno      = 40
+hitsound           = s2,1
+guardsound         = 6,0
+ground.type        = High
+ground.slidetime   = 4
+ground.hittime     = 4
+ground.velocity    = -5,0
+air.velocity       = -2,-2
+air.juggle         = 3
+[State 1000, ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 0
+ctrl               = 1
+
+
+[Statedef 1010] ;みずのはどう（強）
+type               = S
+movetype           = A
+physics            = S
+poweradd           = 0
+velset             = 0,0
+anim               = 1010
+ctrl               = 0
+sprpriority        = 2
+[State 660, 音]
+type               = PlaySnd
+trigger1           = Time = 0
+channel            = 0
+value              = s2, 0
+[State 1010, 水]
+type               = Projectile
+trigger1           = Time = 20
+attr               = S, NA
+damage             = 70
+animtype           = medium
+pausetime          = 3,3
+offset             = 5,-36
+velocity           = 3,0
+projID             = 1005
+projanim           = 1005
+projremanim        = 1006
+projscale          = 1,1
+projshadow         = 0,0,0
+projhits           = 1
+;projmisstime      = 3
+projpriority       = 2
+projremove         = 1
+projremovetime     = -1
+guardflag          = MA
+priority           = 3
+sparkno            = 1
+sparkxy            = 0,0
+guard.sparkno      = 40
+hitsound           = s2,1
+guardsound         = 6,0
+ground.type        = High
+ground.slidetime   = 4
+ground.hittime     = 4
+ground.velocity    = -5.5,0
+air.velocity       = -2.2,-2
+air.juggle         = 3
+[State 1010, ステート変更]
+type               = ChangeState
+trigger1           = AnimTime = 0
+value              = 0
+ctrl               = 1
+
